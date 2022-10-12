@@ -51,3 +51,28 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 	product := models.EditProduct(idProduct)
 	temp.ExecuteTemplate(w, "Edit", product)
 }
+
+func Update(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		id := r.FormValue("id")
+		name := r.FormValue("name")
+		description := r.FormValue("description")
+		price := r.FormValue("price")
+		quantity := r.FormValue("quantity")
+
+		convertedId, err := strconv.Atoi(id)
+		if err != nil {
+			log.Println("Error converting id to int", err)
+		}
+		convertedPrice, err := strconv.ParseFloat(price, 64)
+		if err != nil {
+			log.Println("Error converting price to float64", err)
+		}
+		convertedQuantity, err := strconv.Atoi(quantity)
+		if err != nil {
+			log.Println("Error converting quantity to int", err)
+		}
+		models.UpdateProduct(convertedId, name, description, convertedPrice, convertedQuantity)
+	}
+	http.Redirect(w, r, "/", 301)
+}
