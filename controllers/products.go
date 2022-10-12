@@ -47,5 +47,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 
 }
 func Edit(w http.ResponseWriter, r *http.Request) {
-	temp.ExecuteTemplate(w, "Edit", nil)
+	idProduct := r.URL.Query().Get("id")
+	product := models.EditProduct(idProduct)
+	temp.ExecuteTemplate(w, "Edit", product)
 }
